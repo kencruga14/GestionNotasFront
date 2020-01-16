@@ -151,6 +151,7 @@ export class EstudianteComponent implements OnInit {
         this. getAsignaturasNivel();
         this.getTiposMatricula();
         this.getCarreras();
+        this.getMatriculasUsuario();
     }
 
 
@@ -265,7 +266,17 @@ export class EstudianteComponent implements OnInit {
                 this.spinner.hide();
             });
     }
-
+    getMatriculasUsuario() {
+        this.spinner.show();
+        this.service.get('catalogos/carreras?user_id=' + this.user.id).subscribe(
+            response => {
+                this.carreras = response['carreras'];
+                this.spinner.hide();
+            },
+            error => {
+                this.spinner.hide();
+            });
+    }
     getAsignaturasNivel() {
         this.service.get('detalle_matriculas?id=2573')
             .subscribe(

@@ -21,35 +21,21 @@
                           *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
               </select>
           </td>
-          <!-- <span [ngClass]="{'text-danger':periodoLectivoSeleccionado.estado!=estados.periodoLectivo.actual,
-                'text-success':periodoLectivoSeleccionado.estado==estados.periodoLectivo.actual}"
-                      class="form-control">
-                    <strong>{{txtPeridoActualHistorico}} :</strong>
-                </span>
-            </td>-->
-        
-        <td>
-          <select [disabled]="flagAsignaturasCupo" [(ngModel)]="carrera.id" class="form-control" id="carrera"
-            name="carrera" >
-            <option value="" selected>SELECCIONE UNA CARRERA</option>
-            <option value="0" selected>TODAS</option>
-            <option value="{{carrera.id}}" *ngFor="let carrera of carreras" class="small"
-              [ngClass]="{'bg-warning':carrera.descripcion=='MALLA ANTIGUA','text-white':carrera.descripcion=='MALLA ANTIGUA'}">
-              {{ carrera.descripcion }}
-            </option>
-          </select>
-        </td>
-        <td>
+        pl id  {{periodoLectivoActual.id}}
+        pl id  {{periodoLectivoActual.nombre}}
+      <td>
           <select [disabled]="flagAsignaturasCupo" [(ngModel)]="periodoAcademico" class="form-control"
-            id="periodoAcademico" name="periodoAcademico" required>
-            <option value="-1" selected>SELECCIONE NIVEL</option>
-            <option value="" selected>TODOS</option>
-            <option value="{{periodoAcademico.id}}" *ngFor="let periodoAcademico of periodoAcademicos" class="small">
-              {{periodoAcademico.nombre}}
-            </option>
+                  id="periodoAcademico" name="periodoAcademico" required
+                  (change)="getAprobados(1);getDetalleMatriculasForMalla()">
+              <option value="-1" selected>SELECCIONE NIVEL</option>
+              <option value="" selected>TODOS</option>
+              <option value="{{periodoAcademico.id}}" *ngFor="let periodoAcademico of periodoAcademicos"
+                      class="small">
+                  {{periodoAcademico.nombre}}
+              </option>
           </select>
-        </td>
-      </tr>
+      </td>
+  </tr>
     </table>
   </div>
 </div>
@@ -74,9 +60,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let notas of detalleMatricula" [ngClass]="">
-          <td>
-            <small>{{notas.id}}</small>
-          </td>
           <td>
             <small>{{notas.nombre}}</small>
           </td>

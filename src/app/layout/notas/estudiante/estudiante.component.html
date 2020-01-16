@@ -1,0 +1,132 @@
+<small># username {{user.user_name}}</small><br>
+<small># estudiante
+  {{estudiante.nombre1 + ' ' +estudiante.nombre2 + ' '+estudiante.apellido1 +' '+estudiante.apellido2}}</small><br>
+<small># Matricula {{carrera.nombre}}</small><br>
+<div class=" row">
+  <div class="col-lg-12">
+    <table class="table table-responsive table-sm">
+      <tr>
+          <td>
+              <span [ngClass]="{'text-danger':periodoLectivoSeleccionado.estado!='ACTUAL',
+              'text-success':periodoLectivoSeleccionado.estado=='ACTUAL'}" class="form-control">
+                  <strong>{{txtPeriodoActualHistorico}} :</strong>
+              </span>
+          </td>
+          <td>
+              <select name="periodoLectivoActual"
+                      [(ngModel)]="periodoLectivoActual.id" class="form-control"
+                      (change)="cambiarPeriodoLectivoActual();">
+                  <option [ngClass]="{'bg-success text-white':periodo.estado=='ACTUAL'}"
+                          value="{{periodo.id}}"
+                          *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
+              </select>
+          </td>
+          <!-- <span [ngClass]="{'text-danger':periodoLectivoSeleccionado.estado!=estados.periodoLectivo.actual,
+                'text-success':periodoLectivoSeleccionado.estado==estados.periodoLectivo.actual}"
+                      class="form-control">
+                    <strong>{{txtPeridoActualHistorico}} :</strong>
+                </span>
+            </td>-->
+        
+        <td>
+          <select [disabled]="flagAsignaturasCupo" [(ngModel)]="carrera.id" class="form-control" id="carrera"
+            name="carrera" >
+            <option value="" selected>SELECCIONE UNA CARRERA</option>
+            <option value="0" selected>TODAS</option>
+            <option value="{{carrera.id}}" *ngFor="let carrera of carreras" class="small"
+              [ngClass]="{'bg-warning':carrera.descripcion=='MALLA ANTIGUA','text-white':carrera.descripcion=='MALLA ANTIGUA'}">
+              {{ carrera.descripcion }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <select [disabled]="flagAsignaturasCupo" [(ngModel)]="periodoAcademico" class="form-control"
+            id="periodoAcademico" name="periodoAcademico" required>
+            <option value="-1" selected>SELECCIONE NIVEL</option>
+            <option value="" selected>TODOS</option>
+            <option value="{{periodoAcademico.id}}" *ngFor="let periodoAcademico of periodoAcademicos" class="small">
+              {{periodoAcademico.nombre}}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class=" row">
+  <div class="col-lg-12">
+
+  </div>
+</div>
+<!--Tabla cupos-->
+<div class="row mt-1" *ngIf="!flagAsignaturasCupo">
+  <div class="col-lg-12">
+    <table class="table table-hover table-sm table-responsive">
+      <thead class="table-default">
+        <th width="10%" *ngIf="carrera.id==0">Código</th>
+        <th width="20%">Asignatura</th>
+        <th width="15%">Nota Parcial 1</th>
+        <th width="15%">Nota Parcial 2</th>
+        <th width="10%">Nota Final</th>
+        <th width="20%">Asistencia Parcial 1</th>
+        <th width="20%">Asistencia Parcial 2</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notas of detalleMatricula" [ngClass]="">
+          <td>
+            <small>{{notas.id}}</small>
+          </td>
+          <td>
+            <small>{{notas.nombre}}</small>
+          </td>
+          <td>
+            <small>{{notas.nota1}}</small>
+          </td>
+          <td>
+            <small>{{notas.nota2}}</small>
+          </td>
+          <td>
+            <small>{{notas.nota_final}}</small>
+          </td>
+          <td>
+            <small>{{notas.asistencia1}}</small>
+          </td>
+          <td>
+            <small>{{notas.asistencia2}}</small>
+          </td>
+          <td>
+            <small>{{notas.asistencia_final}}</small>
+          </td>
+        </tr>
+        <tr *ngFor="let c of detalle_matricula"
+          [ngClass]="{'table-danger':cupo.estado=='APROBADO','table-secondary':cupo.estado=='ANULADO'}">
+          <td>
+            <small>{{c.id}}</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    <table class="table table-hover table-sm table-responsive">
+      <thead class="table-default">
+        <th width="10%" *ngIf="carrera.id==0">Código</th>
+        <th width="20%">matricula</th>
+        <th width="20%">descripcion</th>
+        
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of carreras" [ngClass]="">
+          <td>
+            <small>{{m.id}}</small>
+          </td>
+          <td>
+            <small>{{m.descripcion}}</small>
+          </td>
+     
+        </tr>
+        
+      </tbody>
+    </table>
+</div>

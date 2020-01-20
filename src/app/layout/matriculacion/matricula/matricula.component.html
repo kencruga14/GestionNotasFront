@@ -148,9 +148,9 @@
             <tbody>
             <tr *ngFor="let cupo of cupos"
                 [ngClass]="{'table-danger':cupo.estado=='APROBADO','table-secondary':cupo.estado=='ANULADO'}">
-                <td *ngIf="carrera.id==0">
-                    <small>{{cupo.carrera}}</small>
-                </td>
+                <!-- <td *ngIf="carrera.id==0">
+                    <small>{{cupo.carrer}}</small>
+                </td> -->
                 <td>
                     <small>{{cupo.estudiante.identificacion}}</small>
                 </td>

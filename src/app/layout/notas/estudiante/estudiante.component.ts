@@ -82,6 +82,8 @@ export class EstudianteComponent implements OnInit {
     periodoAcademico: string;
     periodoLectivo: string;
     periodoLectivoActual: PeriodoLectivo;
+    detallematricula: DetalleMatricula;
+    detallematriculaPeriodo: Array<DetalleMatricula>;
     periodoLectivos: Array<PeriodoLectivo>;
     matriculados: Array<any>;
     matriculas: Array<Matricula>;
@@ -106,13 +108,14 @@ export class EstudianteComponent implements OnInit {
         this.total_detalle_matriculas_for_malla = new Array<any>();
         this.notificacion = new Notificacion();
         this.matriculas = new Array<Matricula>();
+        this.detallematriculaPeriodo = new Array<DetalleMatricula>();
         this.carrera = new Carrera();
         this.carreras = new Array<Carrera>();
         this.fechaActual = new Date();
         this.periodoLectivoSeleccionado = new PeriodoLectivo();
+        this.periodoLectivoSeleccionado = new PeriodoLectivo();
         this.estudiantesHistoricos = new Array<Estudiante>();
         this.total_pages_pagination = new Array<any>();
-        this.txtPeriodoActualHistorico = 'NO EXISTE UN PERIODO ABIERTO';
         this.user = JSON.parse(localStorage.getItem('user')) as User;
         this.buscador = '';
         this.flagInformacionEstudiante = false;
@@ -152,6 +155,7 @@ export class EstudianteComponent implements OnInit {
         this.getTiposMatricula();
         this.getCarreras();
         this.getMatriculasUsuario();
+        this.getDetalleMatriculasForMalla();
     }
 
 
@@ -187,8 +191,21 @@ export class EstudianteComponent implements OnInit {
             });
     }
 
-    getPeriodoAcademicos() {
 
+    getDetalleMatriculasForMalla() {
+            const parametros =
+                '?id=2573'
+                + '&periodo_lectivo_id=4';
+            this.service.get('detalle_matriculas/periodo' + parametros)
+                .subscribe(
+                    response => {
+                        this.detallematriculaPeriodo = response['detalleMatriculaPeriodo'];
+                    },
+                    error => {
+                    });
+    }
+
+    getPeriodoAcademicos() {
         this.service.get('catalogos/periodo_academicos').subscribe(
             response => {
                 this.periodoAcademicos = response['periodo_academicos'];
@@ -207,7 +224,6 @@ export class EstudianteComponent implements OnInit {
                 } else {
                     this.periodoLectivoActual = response['periodo_lectivo_actual'];
                     this.periodoLectivoSeleccionado = response['periodo_lectivo_actual'];
-                    this.periodoLectivoSeleccionado.fecha_fin_cupo = new Date(this.periodoLectivoActual.fecha_fin_cupo + 'T00:00:00');
                     this.txtPeriodoActualHistorico = 'PERIODO LECTIVO ACTUAL';
                 }
             },

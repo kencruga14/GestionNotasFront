@@ -1,7 +1,4 @@
-<small># username {{user.user_name}}</small><br>
-<small># estudiante
-  {{estudiante.nombre1 + ' ' +estudiante.nombre2 + ' '+estudiante.apellido1 +' '+estudiante.apellido2}}</small><br>
-<small># Matricula {{carrera.nombre}}</small><br>
+
 <div class=" row">
   <div class="col-lg-12">
     <table class="table table-responsive table-sm">
@@ -13,103 +10,76 @@
               </span>
           </td>
           <td>
-              <select name="periodoLectivoActual"
-                      [(ngModel)]="periodoLectivoActual.id" class="form-control"
-                      (change)="cambiarPeriodoLectivoActual();">
-                  <option [ngClass]="{'bg-success text-white':periodo.estado=='ACTUAL'}"
-                          value="{{periodo.id}}"
-                          *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
-              </select>
-          </td>
-        pl id  {{periodoLectivoActual.id}}
-        pl id  {{periodoLectivoActual.nombre}}
-      <td>
-          <select [disabled]="flagAsignaturasCupo" [(ngModel)]="periodoAcademico" class="form-control"
-                  id="periodoAcademico" name="periodoAcademico" required
-                  (change)="getAprobados(1);getDetalleMatriculasForMalla()">
-              <option value="-1" selected>SELECCIONE NIVEL</option>
-              <option value="" selected>TODOS</option>
-              <option value="{{periodoAcademico.id}}" *ngFor="let periodoAcademico of periodoAcademicos"
-                      class="small">
-                  {{periodoAcademico.nombre}}
+            <select [disabled]="flagAsignaturasCupo" name="periodoLectivoActual"
+                    [(ngModel)]="periodoLectivoActual.id" class="form-control"
+                    (change)="cambiarPeriodoLectivoActual();getDetalleMatriculasForMalla()">
+                <option [ngClass]="{'bg-success text-white':periodo.estado=='ACTUAL'}" value="{{periodo.id}}"
+                        *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
+            </select>
+        </td>
+     <!--   pl id  {{periodoLectivoActual.id}}-->
+                  <td>
+          <select [disabled]="flagAsignaturasCupo" [(ngModel)]="carrera.id" class="form-control"
+                  id="carrera" name="carrera" required
+                  (change)="getDetalleMatriculasForMalla()">
+              <option value="" selected>SELECCIONE UNA CARRERA</option>
+              <option value="0" selected>TODAS</option>
+              <option value="{{carrera.id}}" *ngFor="let carrera of carreras" class="small"
+                      [ngClass]="{'bg-warning':carrera.descripcion=='MALLA ANTIGUA','text-white':carrera.descripcion=='MALLA ANTIGUA'}">
+                  {{ carrera.descripcion }}
               </option>
           </select>
       </td>
+    <!--   carrera id{{ carrera.id }}-->
+  
   </tr>
     </table>
   </div>
 </div>
 
-<div class=" row">
-  <div class="col-lg-12">
-
-  </div>
-</div>
-<!--Tabla cupos-->
+<div class="col-lg-12">
+  <small><strong>Estudiante</strong>
+    {{estudiante.nombre1 + ' ' +estudiante.nombre2 + ' '+estudiante.apellido1 +' '+estudiante.apellido2}}</small><br>
+    <small><strong>Cédula</strong> {{user.user_name}}</small><br>
+    <small><strong>Correo</strong> {{user.email}}</small><br>
+<!-- Tabla cupos -->
 <div class="row mt-1" *ngIf="!flagAsignaturasCupo">
   <div class="col-lg-12">
     <table class="table table-hover table-sm table-responsive">
       <thead class="table-default">
         <th width="10%" *ngIf="carrera.id==0">Código</th>
-        <th width="20%">Asignatura</th>
-        <th width="15%">Nota Parcial 1</th>
-        <th width="15%">Nota Parcial 2</th>
+        <th width="25%">Asignatura</th>
+        <th width="10%">Nota Parcial 1</th>
+        <th width="15%">Asistencia Parcial 2</th>
+        <th width="10%">Nota Parcial 2</th>
+        <th width="15%">Asistencia Parcial 2</th>
         <th width="10%">Nota Final</th>
-        <th width="20%">Asistencia Parcial 1</th>
-        <th width="20%">Asistencia Parcial 2</th>
+        <th width="10%">Asistencia Final</th>
       </thead>
       <tbody>
-        <tr *ngFor="let notas of detalleMatricula" [ngClass]="">
+        <tr *ngFor="let notas of detallematriculaPeriodo" [ngClass]="">
           <td>
-            <small>{{notas.nombre}}</small>
+            <small>{{notas.asignatura.nombre}}</small>
           </td>
           <td>
             <small>{{notas.nota1}}</small>
           </td>
           <td>
-            <small>{{notas.nota2}}</small>
-          </td>
-          <td>
-            <small>{{notas.nota_final}}</small>
-          </td>
-          <td>
             <small>{{notas.asistencia1}}</small>
+          </td>
+          <td>
+            <small>{{notas.nota2}}</small>
           </td>
           <td>
             <small>{{notas.asistencia2}}</small>
           </td>
           <td>
+            <small>{{notas.nota_final}}</small>
+          </td>
+          <td>
             <small>{{notas.asistencia_final}}</small>
           </td>
         </tr>
-        <tr *ngFor="let c of detalle_matricula"
-          [ngClass]="{'table-danger':cupo.estado=='APROBADO','table-secondary':cupo.estado=='ANULADO'}">
-          <td>
-            <small>{{c.id}}</small>
-          </td>
-        </tr>
       </tbody>
     </table>
-  </div>
-
-    <table class="table table-hover table-sm table-responsive">
-      <thead class="table-default">
-        <th width="10%" *ngIf="carrera.id==0">Código</th>
-        <th width="20%">matricula</th>
-        <th width="20%">descripcion</th>
-        
-      </thead>
-      <tbody>
-        <tr *ngFor="let m of carreras" [ngClass]="">
-          <td>
-            <small>{{m.id}}</small>
-          </td>
-          <td>
-            <small>{{m.descripcion}}</small>
-          </td>
-     
-        </tr>
-        
-      </tbody>
-    </table>
-</div>
+  </div> 

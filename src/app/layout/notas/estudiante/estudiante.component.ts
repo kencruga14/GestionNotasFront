@@ -97,12 +97,10 @@ export class EstudianteComponent implements OnInit {
        }
 
     ngOnInit() {
-
         this.matricula = new Matricula();
         this.estudiante = new Estudiante();
         this.fechaActual = new Date();
         this.notificacion = new Notificacion();
-        this.periodoLectivoSeleccionado = new PeriodoLectivo();
         this.matriculaSeleccionada = new Matricula();
         this.periodoLectivoActual = new PeriodoLectivo();
         this.total_detalle_matriculas_for_malla = new Array<any>();
@@ -112,7 +110,6 @@ export class EstudianteComponent implements OnInit {
         this.carrera = new Carrera();
         this.carreras = new Array<Carrera>();
         this.fechaActual = new Date();
-        this.periodoLectivoSeleccionado = new PeriodoLectivo();
         this.periodoLectivoSeleccionado = new PeriodoLectivo();
         this.estudiantesHistoricos = new Array<Estudiante>();
         this.total_pages_pagination = new Array<any>();
@@ -151,11 +148,9 @@ export class EstudianteComponent implements OnInit {
         this.getPeriodosLectivos();
         this.getTiposMatricula();
         this.getEstudiante();
-        this. getAsignaturasNivel();
         this.getTiposMatricula();
         this.getCarreras();
         this.getMatriculasUsuario();
-        this.getDetalleMatriculasForMalla();
     }
 
 
@@ -192,18 +187,7 @@ export class EstudianteComponent implements OnInit {
     }
 
 
-    getDetalleMatriculasForMalla() {
-            const parametros =
-                '?id=2573'
-                + '&periodo_lectivo_id=4';
-            this.service.get('detalle_matriculas/periodo' + parametros)
-                .subscribe(
-                    response => {
-                        this.detallematriculaPeriodo = response['detalleMatriculaPeriodo'];
-                    },
-                    error => {
-                    });
-    }
+
 
     getPeriodoAcademicos() {
         this.service.get('catalogos/periodo_academicos').subscribe(
@@ -263,6 +247,7 @@ export class EstudianteComponent implements OnInit {
                 this.periodosLectivos.forEach(value => {
                     if (value.estado === 'ACTUAL') {
                         this.periodoLectivoSeleccionado = value;
+                        this.getDetalleMatriculasForMalla(this.periodoLectivoSeleccionado);
                     }
                 });
                 this.spinner.hide();
@@ -271,6 +256,8 @@ export class EstudianteComponent implements OnInit {
                 this.spinner.hide();
             });
     }
+
+
     getCarreras() {
         this.spinner.show();
         this.service.get('catalogos/carreras?user_id=' + this.user.id).subscribe(
@@ -293,19 +280,20 @@ export class EstudianteComponent implements OnInit {
                 this.spinner.hide();
             });
     }
-    getAsignaturasNivel() {
-        this.service.get('detalle_matriculas?id=2573')
+
+
+    getDetalleMatriculasForMalla(periodoLectivoActual) {
+        const parametros =
+        '?user_id=' + this.user.id // 1337
+        + '&periodo_lectivo_id=' + periodoLectivoActual.id;
+        this.service.get('detalle_matriculas/periodo' + parametros)
             .subscribe(
                 response => {
-                    this.detalleMatricula = response['detalleMatricula'];
+                    this.detallematriculaPeriodo = response['detalleMatriculaPeriodo'];
                 },
                 error => {
-                    this.spinner.hide();
-                    swal.fire(this.messages['error500']);
                 });
-    }
-
-
+}
     cambiarPeriodoLectivoActual() {
         this.periodosLectivos.forEach(value => {
             if (value.id === this.periodoLectivoActual.id) {
@@ -314,12 +302,12 @@ export class EstudianteComponent implements OnInit {
                     this.txtPeridoActualHistorico = 'PERIODO LECTIVO HISTÓRICO';
                 } else {
                     this.txtPeridoActualHistorico = 'PERIODO LECTIVO ACTUAL';
-                }
 
+                }
+                this.getDetalleMatriculasForMalla(this.periodoLectivoSeleccionado);
             }
         });
     }
-
 
 
      }

@@ -9,16 +9,24 @@
                   <strong>{{txtPeriodoActualHistorico}} :</strong>
               </span>
           </td>
-          <td>
-            <select [disabled]="flagAsignaturasCupo" name="periodoLectivoActual"
-                    [(ngModel)]="periodoLectivoActual.id" class="form-control"
-                    (change)="cambiarPeriodoLectivoActual();getDetalleMatriculasForMalla()">
-                <option [ngClass]="{'bg-success text-white':periodo.estado=='ACTUAL'}" value="{{periodo.id}}"
-                        *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
-            </select>
-        </td>
+
+        <td>
+          <select name="periodoLectivoActual"
+              
+          [(ngModel)]="periodoLectivoActual.id" class="form-control"
+                  (change)="cambiarPeriodoLectivoActual();">
+              <option [ngClass]="{'bg-success text-white':periodo.estado=='ACTUAL'}"
+                      value="{{periodo.id}}"
+                      *ngFor="let periodo of periodosLectivos">{{periodo.nombre}}</option>
+          </select>
+      </td>
+      <td>
+        <button (click)="getDetalleMatriculasForMalla(periodoLectivoActual)" class="btn btn-success"
+                title="Actualizar"><span class="{{messages['buttonRefresh']['icon']}}"></span>
+        </button>
+    </td>
      <!--   pl id  {{periodoLectivoActual.id}}-->
-                  <td>
+                  <!-- <td>
           <select [disabled]="flagAsignaturasCupo" [(ngModel)]="carrera.id" class="form-control"
                   id="carrera" name="carrera" required
                   (change)="getDetalleMatriculasForMalla()">
@@ -29,7 +37,7 @@
                   {{ carrera.descripcion }}
               </option>
           </select>
-      </td>
+      </td> -->
     <!--   carrera id{{ carrera.id }}-->
   
   </tr>

@@ -197,11 +197,11 @@
                 <b class="text-danger">{{messages['requiredFields']['icon']}} </b>
                 {{messages['requiredFields']['text']}}
             </h6>
-            <button type="button" class="btn btn-success" (click)="c('save')" [disabled]="formCtrl.form.invalid">
+            <button type="button" class="btn btn-success" (click)="('save')" [disabled]="formCtrl.form.invalid">
         <span
             class="{{messages['saveConfirmationDialog']['iconOk']}}"></span>&nbsp;{{messages['saveConfirmationDialog']['ok']}}
             </button>
-            <button type="button" class="btn btn-danger" (click)="c('close')">
+            <button type="button" class="btn btn-danger" (click)="('close')">
         <span
             class="{{messages['saveConfirmationDialog']['iconCancel']}}"></span>&nbsp;{{messages['saveConfirmationDialog']['cancel']}}
             </button>
